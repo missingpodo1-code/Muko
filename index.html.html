@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#3182F6">
+<title>묵호 1박 2일 🌊</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{
+  --blue:#3182F6; --blue-dark:#1B64DA; --sky:#5AC8FA; --sky-bg:#E8F3FF;
+  --pink:#FF85A1; --pink-bg:#FFEBF0; --bg:#F2F4F6; --white:#fff;
+  --text:#191F28; --text2:#4E5968; --text3:#8B95A1; --line:#E5E8EB;
+  --radius:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:'Pretendard',-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo',sans-serif;background:#DDE3EA;color:var(--text);line-height:1.5;letter-spacing:-0.01em}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+
+.app{max-width:480px;min-height:100vh;margin:0 auto;background:var(--bg);position:relative;box-shadow:0 0 40px rgba(25,31,40,.15);padding-bottom:96px;overflow-x:hidden}
+
+/* pages */
+.page{display:none;padding:20px 16px 8px}
+.page.active{display:block;animation:pageIn .35s cubic-bezier(.2,.8,.2,1)}
+@keyframes pageIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* common */
+.hero{background:linear-gradient(135deg,#3182F6 0%,#5AC8FA 100%);color:#fff;border-radius:26px;padding:22px 22px 20px;position:relative;overflow:hidden;margin-bottom:16px}
+.hero::after{content:"🌊";position:absolute;right:-6px;bottom:-18px;font-size:92px;opacity:.22;transform:rotate(-8deg)}
+.hero.pink{background:linear-gradient(135deg,#FF85A1 0%,#FFB3C6 100%)}
+.hero small{font-size:13px;font-weight:600;opacity:.9}
+.hero h1{font-size:24px;font-weight:800;margin:4px 0 10px;letter-spacing:-0.03em}
+.dday{display:inline-block;background:rgba(255,255,255,.25);border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700}
+.card{background:var(--white);border-radius:var(--radius);padding:20px;margin-bottom:14px;box-shadow:0 2px 10px rgba(25,31,40,.04)}
+.card h2{font-size:17px;font-weight:700;margin-bottom:4px}
+.sub{font-size:13px;color:var(--text3)}
+.pill{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;background:var(--sky-bg);color:var(--blue)}
+.pill.pink{background:var(--pink-bg);color:#E5527A}
+.pill.gray{background:var(--bg);color:var(--text2)}
+.seg{display:flex;background:#E5E8EB;border-radius:999px;padding:4px;margin-bottom:14px}
+.seg button{flex:1;padding:10px 0;border-radius:999px;font-weight:700;font-size:14px;color:var(--text3);transition:.25s}
+.seg button.on{background:#fff;color:var(--text);box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border-radius:999px;padding:10px 16px;font-weight:700;font-size:13px;transition:transform .15s,background .2s}
+.btn:active{transform:scale(.95)}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.soft{background:var(--sky-bg);color:var(--blue)}
+.btn.pinkb{background:var(--pink-bg);color:#E5527A}
+.btn.naver{background:#E9F9EE;color:#03A94D}
+.btn.block{width:100%;padding:15px;font-size:15px}
+
+/* timeline */
+.tl{position:relative;padding-left:4px}
+.tl-item{display:flex;gap:14px;position:relative;padding-bottom:18px}
+.tl-item:last-child{padding-bottom:0}
+.tl-item::before{content:"";position:absolute;left:21px;top:44px;bottom:-2px;width:2px;background:repeating-linear-gradient(to bottom,#C9DFFB 0 5px,transparent 5px 9px)}
+.tl-item:last-child::before{display:none}
+.tl-dot{flex:none;width:44px;height:44px;border-radius:50%;background:var(--sky-bg);display:flex;align-items:center;justify-content:center;font-size:21px;z-index:1}
+.tl-item.key .tl-dot{background:var(--blue)}
+.tl-body{flex:1;padding-top:2px}
+.tl-time{font-size:13px;font-weight:800;color:var(--blue)}
+.tl-title{font-size:15.5px;font-weight:700}
+.tl-desc{font-size:13px;color:var(--text2);margin:2px 0 6px}
+textarea.memo{width:100%;min-height:90px;border:none;background:var(--bg);border-radius:16px;padding:14px;resize:vertical;outline:none;font-size:14px;transition:box-shadow .2s}
+textarea.memo:focus{box-shadow:0 0 0 2px var(--blue)}
+.tip{background:var(--pink-bg);color:#C23D63;border-radius:16px;padding:12px 14px;font-size:13px;font-weight:500;margin-top:12px}
+
+/* filters */
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;padding:8px 14px;border-radius:999px;background:#fff;color:var(--text2);font-size:13px;font-weight:600;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.chip.on{background:var(--blue);color:#fff}
+.chip:active{transform:scale(.94)}
+
+/* map */
+.mapwrap{background:#fff;border-radius:26px;padding:10px;margin-bottom:14px;box-shadow:0 2px 10px rgba(25,31,40,.04)}
+.mapwrap svg{display:block;width:100%;height:auto;border-radius:20px;touch-action:manipulation}
+.marker{cursor:pointer}
+.marker circle.m{transition:r .2s}
+.marker:active circle.m{r:15}
+@keyframes pulse{0%{r:16;opacity:.6}100%{r:30;opacity:0}}
+.pulse{animation:pulse 1.2s ease-out infinite}
+.maplegend{display:flex;flex-wrap:wrap;gap:6px 12px;padding:8px 6px 2px;font-size:11.5px;color:var(--text2)}
+.maplegend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+
+/* place cards */
+.place{background:#fff;border-radius:var(--radius);padding:18px;margin-bottom:12px;box-shadow:0 2px 10px rgba(25,31,40,.04);border:2px solid transparent;transition:.25s}
+.place.sel{border-color:var(--blue);box-shadow:0 6px 20px rgba(49,130,246,.18);transform:translateY(-2px)}
+.place-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.num{flex:none;width:28px;height:28px;border-radius:50%;color:#fff;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
+.place h3{font-size:16.5px;font-weight:700;flex:1}
+.catb{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px}
+.addr{font-size:12.5px;color:var(--text3);margin-bottom:6px}
+.pnote{font-size:13.5px;color:var(--text2)}
+.warn{display:block;margin-top:8px;background:var(--pink-bg);color:#C23D63;border-radius:12px;padding:8px 12px;font-size:12.5px;font-weight:600}
+.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.empty{text-align:center;color:var(--text3);padding:40px 0;font-size:14px}
+
+/* sheet */
+.overlay{position:fixed;inset:0;background:rgba(25,31,40,.45);opacity:0;pointer-events:none;transition:.3s;z-index:40}
+.overlay.open{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:50%;bottom:0;width:min(100%,480px);background:#fff;border-radius:28px 28px 0 0;padding:12px 22px calc(26px + env(safe-area-inset-bottom));transform:translate(-50%,105%);transition:transform .38s cubic-bezier(.2,.9,.25,1);z-index:41;box-shadow:0 -10px 40px rgba(0,0,0,.15)}
+.sheet.open{transform:translate(-50%,0)}
+.grab{width:42px;height:5px;background:#D1D6DB;border-radius:9px;margin:0 auto 16px}
+.sheet h3{font-size:20px;font-weight:800;margin:6px 0}
+
+/* budget */
+.bigcard{background:#fff;border-radius:26px;padding:22px;margin-bottom:14px;box-shadow:0 2px 10px rgba(25,31,40,.04)}
+.budget-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;font-size:14.5px}
+.budget-row b{font-weight:700}
+.budget-row.total{border-top:1px dashed var(--line);margin-top:6px;padding-top:14px;font-size:16px}
+.remain{font-size:30px;font-weight:800;letter-spacing:-0.03em;color:var(--blue)}
+.remain.neg{color:#F04452}
+.bar{height:10px;background:var(--bg);border-radius:99px;overflow:hidden;display:flex;margin:10px 0 4px}
+.bar span{display:block;height:100%;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.inp{width:100%;border:2px solid transparent;background:var(--bg);border-radius:14px;padding:13px 14px;outline:none;transition:.2s;font-weight:600}
+.inp:focus{border-color:var(--blue);background:#fff}
+.budget-edit{display:flex;align-items:center;gap:8px}
+.budget-edit .inp{width:150px;text-align:right}
+.donutbox{display:flex;align-items:center;gap:18px}
+.donut{flex:none;width:140px;height:140px;position:relative}
+.donut svg{width:100%;height:100%;transform:rotate(-90deg)}
+.donut circle{transition:stroke-dasharray .6s,stroke-dashoffset .6s}
+.donut-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:var(--text3);text-align:center}
+.donut-c b{font-size:15px;color:var(--text)}
+.legend{flex:1;font-size:12.5px}
+.legend div{display:flex;align-items:center;justify-content:space-between;padding:3px 0}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px}
+.legend span{color:var(--text3)}
+.expense{display:flex;align-items:center;gap:10px;padding:13px 0;border-bottom:1px solid var(--line)}
+.expense:last-child{border-bottom:none}
+.expense .ico{flex:none;width:38px;height:38px;border-radius:50%;background:var(--sky-bg);display:flex;align-items:center;justify-content:center;font-size:18px}
+.expense .info{flex:1;min-width:0}
+.expense .nm{font-size:14.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.expense .st{font-size:11.5px;color:var(--text3)}
+.expense .amt{width:92px;border:none;background:var(--bg);border-radius:10px;padding:7px 8px;text-align:right;font-weight:700;font-size:13.5px;outline:none}
+.expense .amt:focus{box-shadow:0 0 0 2px var(--blue);background:#fff}
+.expense .del{color:var(--text3);font-size:16px;padding:4px 6px;border-radius:8px}
+.expense .del:active{background:var(--pink-bg)}
+.chk{appearance:none;-webkit-appearance:none;flex:none;width:24px;height:24px;border-radius:50%;border:2px solid #D1D6DB;background:#fff;position:relative;cursor:pointer;transition:.2s}
+.chk:checked{background:var(--blue);border-color:var(--blue)}
+.chk:checked::after{content:"";position:absolute;left:7px;top:3px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.chk:active{transform:scale(.88)}
+.sec-title{font-size:15px;font-weight:800;margin:18px 4px 10px;display:flex;align-items:center;justify-content:space-between}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.formgrid .full{grid-column:1/-1}
+
+/* checklist */
+.ck{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.ck:last-child{border-bottom:none}
+.ck .tx{flex:1}
+.ck .tt{font-size:15px;font-weight:600;transition:.2s}
+.ck .ds{font-size:12.5px;color:var(--text3)}
+.ck.done .tt{text-decoration:line-through;color:var(--text3)}
+.progress{height:12px;background:rgba(255,255,255,.35);border-radius:99px;overflow:hidden;margin-top:10px}
+.progress span{display:block;height:100%;background:#fff;border-radius:99px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.hours{width:100%;border-collapse:collapse;font-size:13.5px}
+.hours td{padding:10px 0;border-bottom:1px solid var(--line);vertical-align:top}
+.hours tr:last-child td{border-bottom:none}
+.hours td:first-child{font-weight:700;width:38%}
+.hours td:last-child{color:var(--text2)}
+
+/* bottom nav */
+.nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,480px);background:rgba(255,255,255,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:flex;padding:8px 8px calc(8px + env(safe-area-inset-bottom));border-top:1px solid var(--line);z-index:30;border-radius:24px 24px 0 0;box-shadow:0 -6px 24px rgba(25,31,40,.06)}
+.nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;border-radius:16px;color:var(--text3);font-size:11.5px;font-weight:700;transition:.2s}
+.nav button .e{font-size:22px;filter:grayscale(1);opacity:.55;transition:.25s}
+.nav button.on{color:var(--blue)}
+.nav button.on .e{filter:none;opacity:1;transform:translateY(-2px) scale(1.12)}
+.nav button:active{transform:scale(.92)}
+
+.toast{position:fixed;left:50%;bottom:104px;transform:translate(-50%,20px);background:rgba(25,31,40,.9);color:#fff;padding:12px 20px;border-radius:999px;font-size:13.5px;font-weight:600;opacity:0;pointer-events:none;transition:.3s;z-index:60;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- ===== PAGE 1 : 교통 ===== -->
+<section class="page active" id="page-1">
+  <div class="hero">
+    <small>🌊 묵호 · 동해시</small>
+    <h1>묵호 1박 2일<br>이동 타임라인</h1>
+    <span class="dday" id="dday">D-?</span>
+    <span class="dday" style="margin-left:4px">11/20(금) ~ 11/21(토)</span>
+  </div>
+
+  <div class="seg" id="transportSeg">
+    <button class="on" data-dir="go">🚌 가는 편 (금)</button>
+    <button data-dir="back">🏠 오는 편 (토)</button>
+  </div>
+
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px">
+      <div>
+        <h2 id="tlTitle">여의도 → 묵호</h2>
+        <div class="sub" id="tlSub">11월 20일 금요일</div>
+      </div>
+      <span class="pill" id="tlTotal">총 약 4시간 40분</span>
+    </div>
+    <div class="tl" id="timeline"></div>
+    <div class="tip" id="tlTip"></div>
+  </div>
+
+  <div class="card">
+    <h2>📝 예매 · 터미널 메모</h2>
+    <div class="sub" style="margin-bottom:10px">예매번호, 승차홈, 좌석 등을 적어두세요 (자동 저장)</div>
+    <textarea class="memo" id="busMemo" placeholder="예) 서울경부 → 동해 10:40 / 좌석 12, 13 / 승차홈 확인&#10;예) 동해 → 서울경부 15:25"></textarea>
+    <div class="actions">
+      <a class="btn soft" target="_blank" rel="noopener" href="https://www.kobus.co.kr">🎫 고속버스 예매</a>
+      <a class="btn naver" target="_blank" rel="noopener" href="https://map.naver.com/p/search/동해시종합버스터미널">🗺️ 터미널 지도</a>
+    </div>
+  </div>
+  <p class="sub" style="text-align:center;padding:4px 0 10px">※ 소요 시간은 예상치예요. 출발 전 실제 시간표를 꼭 확인하세요!</p>
+</section>
+
+<!-- ===== PAGE 2 : 코스/지도 ===== -->
+<section class="page" id="page-2">
+  <div class="hero pink" style="margin-bottom:14px">
+    <small>🗺️ 묵호 관광 루트</small>
+    <h1 style="margin-bottom:0">논골담길부터<br>하평해변까지</h1>
+  </div>
+
+  <div class="seg" id="daySeg">
+    <button class="on" data-day="all">전체 보기</button>
+    <button data-day="1">Day 1 (금)</button>
+    <button data-day="2">Day 2 (토)</button>
+  </div>
+  <div class="chips" id="catChips"></div>
+
+  <div class="mapwrap">
+    <div id="mapBox"></div>
+    <div class="maplegend" id="mapLegend"></div>
+    <div class="sub" style="padding:6px 6px 2px;font-size:11.5px">📍 마커를 누르면 상세 정보가 열려요 · 실제 지도가 아닌 개념도예요</div>
+  </div>
+
+  <div id="placeList"></div>
+</section>
+
+<!-- ===== PAGE 3 : 가계부 ===== -->
+<section class="page" id="page-3">
+  <div class="hero" style="margin-bottom:14px">
+    <small>🧾 여행 가계부</small>
+    <h1 style="margin-bottom:0">쓴 돈, 쓸 돈<br>한눈에 보기 💸</h1>
+  </div>
+
+  <div class="bigcard">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <b style="font-size:15px">💰 총 예산</b>
+      <div class="budget-edit"><input class="inp" id="budgetInput" type="number" inputmode="numeric" min="0" step="1000"><span style="font-weight:700">원</span></div>
+    </div>
+    <div style="margin-top:18px" class="sub">현재 잔여 예산 (확정 지출 기준)</div>
+    <div class="remain" id="remainNow">0원</div>
+    <div class="bar" id="mainBar"></div>
+    <div class="sub" id="barLabel"></div>
+
+    <div style="margin-top:14px">
+      <div class="budget-row"><span>✅ 기지출 · 확정 비용</span><b id="sumFixed">0원</b></div>
+      <div class="budget-row"><span>🕒 변동 · 예상 지출</span><b id="sumVar">0원</b></div>
+      <div class="budget-row total"><span>🎯 예상 잔여 가용 예산</span><b id="remainFinal" style="color:var(--blue)">0원</b></div>
+    </div>
+  </div>
+
+  <div class="bigcard">
+    <b style="font-size:15px">📊 카테고리별 비중</b>
+    <div class="donutbox" style="margin-top:14px">
+      <div class="donut"><svg viewBox="0 0 140 140" id="donutSvg"></svg>
+        <div class="donut-c"><span>총 지출(예상)</span><b id="donutTotal">0원</b></div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+
+  <div class="bigcard">
+    <b style="font-size:15px">➕ 지출 추가</b>
+    <div class="formgrid" style="margin-top:12px">
+      <input class="inp full" id="fName" placeholder="항목명 (예: 말똥도나스 도넛)" maxlength="30">
+      <input class="inp" id="fAmt" type="number" inputmode="numeric" placeholder="금액 (원)">
+      <select class="inp" id="fCat"></select>
+      <select class="inp full" id="fType">
+        <option value="paid">✅ 이미 결제했어요 (확정)</option>
+        <option value="plan">🕒 아직 안 썼어요 (예상)</option>
+      </select>
+    </div>
+    <button class="btn primary block" id="addBtn">지출 추가</button>
+  </div>
+
+  <div class="sec-title"><span>✅ 기지출 · 선결제 완료</span><span class="pill" id="cntFixed">0건</span></div>
+  <div class="bigcard" style="padding:6px 20px" id="listFixed"></div>
+
+  <div class="sec-title"><span>🕒 변동 · 예상 지출</span><span class="pill pink">체크하면 결제 확정!</span></div>
+  <div class="bigcard" style="padding:6px 20px" id="listVar"></div>
+
+  <button class="btn soft block" id="resetBudget" style="margin-top:4px">↺ 가계부 처음 상태로 되돌리기</button>
+</section>
+
+<!-- ===== PAGE 4 : 체크리스트 ===== -->
+<section class="page" id="page-4">
+  <div class="hero" style="margin-bottom:14px">
+    <small>✅ 출발 전 최종 점검</small>
+    <h1 style="margin-bottom:0">빠뜨린 거<br>없는지 볼까요?</h1>
+    <div class="progress"><span id="ckBar" style="width:0"></span></div>
+    <div style="font-size:13px;font-weight:700;margin-top:8px" id="ckLabel">0 / 0 완료</div>
+  </div>
+
+  <div class="card">
+    <h2>📞 전화 예약 필수</h2>
+    <div class="sub" style="margin-bottom:6px">버튼을 누르면 바로 전화가 걸려요</div>
+    <div id="callList"></div>
+  </div>
+
+  <div class="card">
+    <h2>🎒 특별 준비물</h2>
+    <div class="sub" style="margin-bottom:6px">누르면 체크돼요 · 자동 저장</div>
+    <div id="prepList"></div>
+  </div>
+
+  <div class="card">
+    <h2>⏰ 영업시간 · 주의사항 한눈에</h2>
+    <table class="hours" style="margin-top:8px">
+      <tr><td>103LAB 체크인</td><td>16:00까지 필수 (늦으면 사전 연락)</td></tr>
+      <tr><td>무코야 선물가게</td><td>18시 마감 주의</td></tr>
+      <tr><td>부흥횟집</td><td>오픈 직후 10:30~11:00 추천 · 브레이크 14:30~17:00</td></tr>
+      <tr><td>카라멜스테이션</td><td>11:00~18:00</td></tr>
+      <tr><td>111호 프로젝트</td><td>24시 무인 소품샵</td></tr>
+      <tr><td>노버스</td><td>방문 전 인스타 영업 공지 확인</td></tr>
+      <tr><td>동해수제찹쌀떡</td><td>조기 소진 주의</td></tr>
+      <tr><td>어달삼거리</td><td>차량 통행 주의</td></tr>
+    </table>
+  </div>
+
+  <button class="btn soft block" id="resetCheck">↺ 체크 모두 해제</button>
+</section>
+
+</div>
+
+<!-- Bottom sheet -->
+<div class="overlay" id="overlay"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div id="sheetBody"></div></div>
+
+<!-- Bottom nav -->
+<nav class="nav" id="nav">
+  <button class="on" data-page="1"><span class="e">🚌</span>교통</button>
+  <button data-page="2"><span class="e">🗺️</span>코스/지도</button>
+  <button data-page="3"><span class="e">🧾</span>가계부</button>
+  <button data-page="4"><span class="e">✅</span>체크리스트</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+var $ = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function won(n){return Math.round(n).toLocaleString('ko-KR')+'원'}
+function store(key,val){try{if(val===undefined){var v=localStorage.getItem(key);return v===null?null:JSON.parse(v)}localStorage.setItem(key,JSON.stringify(val))}catch(e){return null}}
+var toastTimer;
+function toast(msg){var t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show')},1800)}
+
+/* ---------- Navigation ---------- */
+function showPage(n){
+  $$('.page').forEach(function(p){p.classList.toggle('active',p.id==='page-'+n)});
+  $$('#nav button').forEach(function(b){b.classList.toggle('on',b.dataset.page===String(n))});
+  window.scrollTo({top:0,behavior:'smooth'});
+  store('mk_tab',n);
+}
+$('#nav').addEventListener('click',function(e){var b=e.target.closest('button');if(b)showPage(b.dataset.page)});
+
+/* ---------- Page 1 : Transport ---------- */
+var D = new Date(), start = new Date(2026,10,20), today = new Date(D.getFullYear(),D.getMonth(),D.getDate());
+var diff = Math.round((start-today)/86400000);
+$('#dday').textContent = diff>0 ? 'D-'+diff : diff===0 ? 'D-DAY 🎉' : (diff>=-1 ? '여행 중 🌊' : '다녀왔어요 💙');
+
+var TL = {
+  go:{title:'여의도 → 묵호',sub:'11월 20일 금요일',total:'총 약 4시간 40분',
+    tip:'💡 10:40 버스 기준 · 터미널엔 50분 정도 여유 있게 도착해요. 체크인(16:00) 전까지 시간이 넉넉해서 식당 예약 전화는 도착 직전에!',
+    items:[
+    {t:'09:10',i:'🚇',n:'여의도 출발',d:'지하철 9호선 급행 또는 일반 → 고속터미널역 하차',b:'약 25~30분'},
+    {t:'09:50',i:'🚏',n:'서울경부고속터미널 도착',d:'탑승 준비 · 화장실, 간식 여유 시간 확보',b:'여유 50분'},
+    {t:'10:40',i:'🚌',n:'고속버스 출발',d:'서울경부 → 동해시종합버스터미널',b:'약 3시간 10분',key:1},
+    {t:'13:50',i:'🚕',n:'동해시종합버스터미널 도착',d:'택시로 묵호 권역 이동 · 행복식당으로 직행!',b:'택시 10~15분',key:1}
+  ]},
+  back:{title:'묵호 → 목동 14단지',sub:'11월 21일 토요일',total:'총 약 4시간',
+    tip:'💡 하평해변에서 사색을 마치고 14:50 전후에는 터미널로 출발하면 15:25 버스를 여유 있게 탈 수 있어요.',
+    items:[
+    {t:'15:25',i:'🚌',n:'고속버스 출발',d:'동해시종합버스터미널 → 서울경부고속터미널',b:'약 3시간 10분',key:1},
+    {t:'18:35',i:'🚏',n:'서울경부고속터미널 도착',d:'하차 후 지하철 9호선 승강장으로 이동',b:'도착'},
+    {t:'18:50',i:'🚇',n:'귀가 루트 추천',d:'9호선 고속터미널 → 신목동역 하차 후 마을버스/도보, 또는 2호선 환승 → 양천구청역 하차',b:'약 45~50분'},
+    {t:'~19:40',i:'🏠',n:'목동 14단지 도착',d:'고생했어요! 푹 쉬어요 💙',b:'집 도착',key:1}
+  ]}
+};
+function renderTL(dir){
+  var d=TL[dir];
+  $('#tlTitle').textContent=d.title;$('#tlSub').textContent=d.sub;$('#tlTotal').textContent=d.total;$('#tlTip').textContent=d.tip;
+  $('#timeline').innerHTML=d.items.map(function(x){
+    return '<div class="tl-item'+(x.key?' key':'')+'"><div class="tl-dot">'+x.i+'</div><div class="tl-body"><div class="tl-time">'+x.t+'</div><div class="tl-title">'+x.n+'</div><div class="tl-desc">'+x.d+'</div><span class="pill'+(x.key?'':' gray')+'">⏱ '+x.b+'</span></div></div>';
+  }).join('');
+}
+$('#transportSeg').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  $$('#transportSeg button').forEach(function(x){x.classList.toggle('on',x===b)});
+  renderTL(b.dataset.dir);
+});
+renderTL('go');
+var memo=$('#busMemo');memo.value=store('mk_memo')||'';
+memo.addEventListener('input',function(){store('mk_memo',memo.value)});
+
+/* ---------- Page 2 : Places & Map ---------- */
+var CATS=['All','Stay','Restaurant','Café','Dessert','Sites','Bar'];
+var CATCOLOR={Stay:'#1B64DA',Restaurant:'#3182F6',Café:'#5AC8FA',Dessert:'#FF85A1',Sites:'#FFB020',Bar:'#9B7BFF'};
+var CATEMOJI={Stay:'🛏️',Restaurant:'🍽️',Café:'☕',Dessert:'🍩',Sites:'📸',Bar:'🍶'};
+var CATBG={Stay:'#E8F0FE',Restaurant:'#E8F3FF',Café:'#E3F7FD',Dessert:'#FFEBF0',Sites:'#FFF4DB',Bar:'#F0EAFF'};
+var P=[
+ {id:'d1-1',day:1,cat:'Restaurant',name:'행복식당',addr:'강원 동해시 일출로 64 호남건어물 2층',tel:'033-531-7011',note:'시그니처 메뉴는 장치조림 🐟',warn:'📞 도착 직전 전화 예약 필수!',x:112,y:236},
+ {id:'d1-2',day:1,cat:'Sites',name:'고래',addr:'강원 동해시 일출로 7',note:'감성 소품샵. 구경하다 보면 시간 순삭 🐋',x:150,y:208},
+ {id:'d1-3',day:1,cat:'Sites',name:'바다바란',addr:'강원 동해시 시장안길 7 오른쪽 골목',note:'골목 안쪽의 무인 소품샵',x:182,y:232},
+ {id:'d1-4',day:1,cat:'Dessert',name:'말똥도나스 동해점',addr:'강원 동해시 논골1길 24',note:'묵호갈매기 도넛 + 오션뷰 휴식 🍩',x:208,y:178},
+ {id:'d1-5',day:1,cat:'Stay',name:'103LAB 게스트하우스',addr:'강원 동해시 논골1길 19',note:'짐 풀고 재정비하는 시간',warn:'⏰ 16:00까지 체크인 필수! 늦으면 사전 연락',x:226,y:152},
+ {id:'d1-6',day:1,cat:'Sites',name:'등대그집',addr:'강원 동해시 논골1길 17-6',note:'핸드메이드 마그넷 🧲',x:244,y:126},
+ {id:'d1-7',day:1,cat:'Sites',name:'무코야 선물가게',addr:'강원 동해시 등대오름길 24-5',note:'묵호등대 바로 앞',warn:'⏰ 18시 마감 주의',x:270,y:100},
+ {id:'d1-8',day:1,cat:'Bar',name:'이야기고래',addr:'강원 동해시 묵호시장길 29 1층',tel:'033-534-7775',note:'조용한 포차/이자카야 🍶',warn:'📞 저녁 방문 전 자리 확인/예약 권장',x:148,y:266},
+ {id:'d2-1',day:2,cat:'Sites',name:'어달삼거리',addr:'강원 동해시 어달동',note:'오전 햇살 포토스팟 📷',warn:'🚗 차량 통행 주의',x:312,y:56},
+ {id:'d2-2',day:2,cat:'Restaurant',name:'부흥횟집',addr:'강원 동해시 일출로 93',note:'물회 · 회덮밥. 브레이크타임 14:30~17:00',warn:'🕥 오픈 직후 10:30~11:00 방문 추천',x:204,y:210},
+ {id:'d2-3',day:2,cat:'Restaurant',name:'묵호김밥',addr:'강원 동해시 중앙시장길 3',tel:'0507-1366-7806',note:'계란지단 김밥 🍙',warn:'📞 오전 재고 확인 및 포장 예약 필수',x:84,y:224},
+ {id:'d2-4',day:2,cat:'Dessert',name:'동해수제찹쌀떡',addr:'강원 동해시 일출로 36',note:'딸기 · 앙버터 찹쌀떡',warn:'⚠️ 조기 소진 주의',x:100,y:196},
+ {id:'d2-5',day:2,cat:'Café',name:'카라멜스테이션',addr:'강원 동해시 발한로 219-11',note:'콘수수커피 · 11:00~18:00',x:66,y:158},
+ {id:'d2-6',day:2,cat:'Café',name:'도야하우스',addr:'강원 동해시 발한로 223-1',note:'블렌딩 티 · 밀크티',warn:'🥤 테이크아웃 시 개인 텀블러 필수',x:44,y:136},
+ {id:'d2-7',day:2,cat:'Sites',name:'111호 프로젝트',addr:'강원 동해시 발한로 208 2층',note:'24시 무인 소품샵',x:84,y:116},
+ {id:'d2-8',day:2,cat:'Sites',name:'노버스',addr:'강원 동해시 발한로 201 1층',note:'소품샵',warn:'📷 방문 전 인스타 영업 공지 확인',x:50,y:92},
+ {id:'d2-9',day:2,cat:'Sites',name:'하평해변',addr:'강원 동해시 평릉동 40-1',note:'돌아가는 날 사색 코스 🏖️ 캠핑 의자 휴식 후 버스터미널으로 이동',x:60,y:296}
+];
+(function(){var c={1:0,2:0};P.forEach(function(p){p.n=++c[p.day]})})();
+function naverUrl(p){return 'https://map.naver.com/p/search/'+encodeURIComponent('동해시 '+p.name)}
+
+var state={day:'all',cat:'All',sel:null};
+
+function renderChips(){
+  $('#catChips').innerHTML=CATS.map(function(c){
+    return '<button class="chip'+(state.cat===c?' on':'')+'" data-cat="'+c+'">'+(c==='All'?'✨ ':CATEMOJI[c]+' ')+c+'</button>';
+  }).join('');
+}
+function visible(){return P.filter(function(p){return (state.day==='all'||String(p.day)===state.day)&&(state.cat==='All'||p.cat===state.cat)})}
+
+function renderMap(){
+  var vis=visible(),svg='';
+  svg+='<svg viewBox="0 0 360 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="묵호 권역 루트 개념도">';
+  svg+='<defs><linearGradient id="sea" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CFE6FF"/><stop offset="1" stop-color="#9ED2FA"/></linearGradient></defs>';
+  svg+='<rect width="360" height="320" fill="#F7F9FB"/>';
+  svg+='<path d="M150 0 L360 0 L360 320 L300 320 C300 230 290 190 262 160 C240 135 210 120 190 90 C170 60 160 30 150 0Z" fill="url(#sea)"/>';
+  svg+='<path d="M0 320 L0 250 C40 262 90 300 120 320Z" fill="#CFE6FF" opacity=".6"/>';
+  svg+='<path d="M10 300 C60 270 120 290 150 320" stroke="#fff" stroke-width="3" fill="none" opacity=".7"/>';
+  svg+='<g fill="none" stroke="#fff" stroke-width="2" opacity=".8"><path d="M300 60c10-6 20 6 30 0s20 6 30 0"/><path d="M290 150c10-6 20 6 30 0s20 6 30 0"/><path d="M310 240c10-6 20 6 30 0"/></g>';
+  svg+='<text x="318" y="110" font-size="12" fill="#3182F6" font-weight="700" text-anchor="middle">동해 바다 🌊</text>';
+  svg+='<g font-size="10.5" fill="#8B95A1" font-weight="600">';
+  svg+='<text x="162" y="144">묵호등대</text><text x="140" y="190" opacity=".0">.</text><text x="248" y="196" opacity="0">.</text>';
+  svg+='<text x="8" y="76">발한로</text><text x="262" y="48">어달</text><text x="76" y="312">하평해변</text><text x="40" y="262">묵호시장·항</text>';
+  svg+='</g>';
+  /* routes */
+  [1,2].forEach(function(d){
+    var pts=vis.filter(function(p){return p.day===d});
+    if(pts.length>1){
+      svg+='<polyline points="'+pts.map(function(p){return p.x+','+p.y}).join(' ')+'" fill="none" stroke="'+(d===1?'#3182F6':'#FF85A1')+'" stroke-width="3" stroke-dasharray="2 7" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>';
+    }
+  });
+  /* markers */
+  vis.forEach(function(p){
+    var sel=state.sel===p.id,col=CATCOLOR[p.cat];
+    svg+='<g class="marker" data-id="'+p.id+'" tabindex="0">';
+    if(sel)svg+='<circle class="pulse" cx="'+p.x+'" cy="'+p.y+'" r="16" fill="'+col+'"/>';
+    svg+='<circle class="m" cx="'+p.x+'" cy="'+p.y+'" r="'+(sel?15:12)+'" fill="'+col+'" stroke="#fff" stroke-width="3"/>';
+    svg+='<text x="'+p.x+'" y="'+(p.y+4)+'" font-size="11" font-weight="800" fill="#fff" text-anchor="middle" pointer-events="none">'+p.n+'</text>';
+    if(sel)svg+='<text x="'+p.x+'" y="'+(p.y-20)+'" font-size="11" font-weight="800" fill="#191F28" text-anchor="middle" stroke="#fff" stroke-width="4" paint-order="stroke">'+esc(p.name)+'</text>';
+    svg+='</g>';
+  });
+  svg+='</svg>';
+  $('#mapBox').innerHTML=svg;
+  $('#mapLegend').innerHTML=Object.keys(CATCOLOR).map(function(k){return '<span><i style="background:'+CATCOLOR[k]+'"></i>'+k+'</span>'}).join('')+
+    '<span><i style="background:#3182F6;border-radius:2px"></i>Day1 동선</span><span><i style="background:#FF85A1;border-radius:2px"></i>Day2 동선</span>';
+}
+
+function actionsHtml(p){
+  var h='<div class="actions">';
+  if(p.tel)h+='<a class="btn pinkb" href="tel:'+p.tel.replace(/-/g,'')+'">📞 전화하기</a>';
+  h+='<a class="btn naver" target="_blank" rel="noopener" href="'+naverUrl(p)+'">🗺️ 네이버 지도로 열기</a></div>';
+  return h;
+}
+function renderList(){
+  var vis=visible(),h='';
+  if(!vis.length){$('#placeList').innerHTML='<div class="empty">🫧 조건에 맞는 장소가 없어요<br>필터를 바꿔보세요</div>';return}
+  var lastDay=0;
+  vis.forEach(function(p){
+    if(state.day==='all'&&p.day!==lastDay){
+      h+='<div class="sec-title">'+(p.day===1?'🌅 Day 1 (금) · 묵호항 & 논골담길 감성 산책':'☀️ Day 2 (토) · 어달 포토스팟, 발한로 & 하평해변')+'</div>';
+      lastDay=p.day;
+    }else if(state.day!=='all'&&lastDay===0){
+      h+='<div class="sec-title">'+(p.day===1?'🌅 Day 1 (금) · 묵호항 & 논골담길 감성 산책':'☀️ Day 2 (토) · 어달 포토스팟, 발한로 & 하평해변')+'</div>';lastDay=p.day;
+    }
+    h+='<div class="place'+(state.sel===p.id?' sel':'')+'" id="card-'+p.id+'" data-id="'+p.id+'">'+
+      '<div class="place-top"><span class="num" style="background:'+CATCOLOR[p.cat]+'">'+p.n+'</span><h3>'+esc(p.name)+'</h3>'+
+      '<span class="catb" style="background:'+CATBG[p.cat]+';color:'+CATCOLOR[p.cat]+'">'+CATEMOJI[p.cat]+' '+p.cat+'</span></div>'+
+      '<div class="addr">📍 '+esc(p.addr)+'</div><div class="pnote">'+esc(p.note)+'</div>'+
+      (p.warn?'<span class="warn">'+esc(p.warn)+'</span>':'')+
+      (p.tel?'<div class="addr" style="margin-top:8px">☎️ '+p.tel+'</div>':'')+
+      actionsHtml(p)+'</div>';
+  });
+  $('#placeList').innerHTML=h;
+}
+function render2(){renderChips();renderMap();renderList()}
+
+function openSheet(p){
+  $('#sheetBody').innerHTML=
+    '<span class="catb" style="background:'+CATBG[p.cat]+';color:'+CATCOLOR[p.cat]+'">'+CATEMOJI[p.cat]+' '+p.cat+'</span> <span class="pill gray">Day '+p.day+' · '+p.n+'번째</span>'+
+    '<h3>'+esc(p.name)+'</h3><div class="addr">📍 '+esc(p.addr)+'</div><div class="pnote">'+esc(p.note)+'</div>'+
+    (p.warn?'<span class="warn">'+esc(p.warn)+'</span>':'')+
+    (p.tel?'<div class="addr" style="margin-top:8px">☎️ '+p.tel+'</div>':'')+actionsHtml(p);
+  $('#sheet').classList.add('open');$('#overlay').classList.add('open');
+}
+function closeSheet(){$('#sheet').classList.remove('open');$('#overlay').classList.remove('open')}
+$('#overlay').addEventListener('click',closeSheet);
+
+function select(id,fromMap){
+  state.sel=id;renderMap();
+  $$('.place').forEach(function(c){c.classList.toggle('sel',c.dataset.id===id)});
+  if(fromMap){
+    var p=P.filter(function(x){return x.id===id})[0];openSheet(p);
+    var c=$('#card-'+id);if(c)c.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+}
+$('#mapBox').addEventListener('click',function(e){var g=e.target.closest('.marker');if(g)select(g.dataset.id,true)});
+$('#placeList').addEventListener('click',function(e){
+  if(e.target.closest('a'))return;
+  var c=e.target.closest('.place');if(c){select(c.dataset.id,false);$('.mapwrap').scrollIntoView({behavior:'smooth',block:'center'})}
+});
+$('#daySeg').addEventListener('click',function(e){
+  var b=e.target.closest('button');if(!b)return;
+  $$('#daySeg button').forEach(function(x){x.classList.toggle('on',x===b)});
+  state.day=b.dataset.day;state.sel=null;render2();
+});
+$('#catChips').addEventListener('click',function(e){
+  var b=e.target.closest('.chip');if(!b)return;
+  state.cat=b.dataset.cat;state.sel=null;render2();
+});
+render2();
+
+/* ---------- Page 3 : Budget ---------- */
+var BCATS=[
+ {k:'교통비',e:'🚌',c:'#3182F6'},{k:'숙박비',e:'🛏️',c:'#1B64DA'},{k:'식비',e:'🍣',c:'#5AC8FA'},
+ {k:'카페·디저트',e:'☕',c:'#FF85A1'},{k:'주류·유흥',e:'🍶',c:'#9B7BFF'},{k:'쇼핑',e:'🎁',c:'#FFB020'},{k:'기타',e:'✨',c:'#B0B8C1'}
+];
+function bcat(k){return BCATS.filter(function(c){return c.k===k})[0]||BCATS[6]}
+function defaultBudget(){
+  return {total:300000,items:[
+    {id:1,name:'고속버스 왕복',cat:'교통비',amount:60000,paid:true,fixed:true},
+    {id:2,name:'103LAB 게스트하우스 숙박',cat:'숙박비',amount:50000,paid:true,fixed:true},
+    {id:3,name:'식비 (행복식당·부흥횟집·묵호김밥 등)',cat:'식비',amount:90000,paid:false},
+    {id:4,name:'카페 & 디저트 (말똥도나스·카라멜스테이션·찹쌀떡 등)',cat:'카페·디저트',amount:30000,paid:false},
+    {id:5,name:'주류/유흥 (이야기고래)',cat:'주류·유흥',amount:40000,paid:false},
+    {id:6,name:'소품/기념품 (등대그집·무코야·111호 등)',cat:'쇼핑',amount:40000,paid:false},
+    {id:7,name:'현지 교통비 (동해 시내 택시/버스)',cat:'교통비',amount:30000,paid:false}
+  ],nextId:8};
+}
+var B=store('mk_budget')||defaultBudget();
+function saveB(){store('mk_budget',B)}
+
+$('#fCat').innerHTML=BCATS.map(function(c){return '<option value="'+c.k+'">'+c.e+' '+c.k+'</option>'}).join('');
+$('#budgetInput').value=B.total;
+
+function expenseRow(it){
+  var c=bcat(it.cat);
+  return '<div class="expense" data-id="'+it.id+'"><div class="ico">'+c.e+'</div>'+
+    '<div class="info"><div class="nm">'+esc(it.name)+'</div><div class="st">'+esc(it.cat)+' · '+(it.paid?'결제 확정':'예상')+'</div></div>'+
+    '<input class="amt" type="number" inputmode="numeric" value="'+it.amount+'" data-act="amt" aria-label="금액">'+
+    (it.fixed?'':'<input class="chk" type="checkbox" data-act="paid" '+(it.paid?'checked':'')+' aria-label="결제 확정">')+
+    '<button class="del" data-act="del" aria-label="삭제">✕</button></div>';
+}
+function renderBudget(){
+  var paid=B.items.filter(function(i){return i.paid}), plan=B.items.filter(function(i){return !i.paid});
+  var sp=paid.reduce(function(s,i){return s+(+i.amount||0)},0), sv=plan.reduce(function(s,i){return s+(+i.amount||0)},0);
+  var total=+B.total||0, remainNow=total-sp, remainFinal=total-sp-sv;
+  $('#sumFixed').textContent=won(sp);$('#sumVar').textContent=won(sv);
+  var r=$('#remainNow');r.textContent=won(remainNow);r.classList.toggle('neg',remainNow<0);
+  var rf=$('#remainFinal');rf.textContent=won(remainFinal);rf.style.color=remainFinal<0?'#F04452':'';
+  var base=Math.max(total,sp+sv,1);
+  $('#mainBar').innerHTML='<span style="width:'+(sp/base*100)+'%;background:#3182F6"></span><span style="width:'+(sv/base*100)+'%;background:#9ED2FA"></span>';
+  $('#barLabel').textContent=remainFinal<0?'⚠️ 예상 지출이 예산을 '+won(-remainFinal)+' 초과해요':'🔵 확정 '+Math.round(sp/base*100)+'% · 🩵 예상 '+Math.round(sv/base*100)+'% · 예산 대비 '+Math.round((sp+sv)/Math.max(total,1)*100)+'% 사용 예정';
+  $('#cntFixed').textContent=paid.length+'건';
+  $('#listFixed').innerHTML=paid.length?paid.map(expenseRow).join(''):'<div class="empty">아직 확정된 지출이 없어요</div>';
+  $('#listVar').innerHTML=plan.length?plan.map(expenseRow).join(''):'<div class="empty">예상 지출이 없어요 🎉</div>';
+
+  /* donut */
+  var sum={},all=sp+sv;BCATS.forEach(function(c){sum[c.k]=0});
+  B.items.forEach(function(i){sum[bcat(i.cat).k]+=(+i.amount||0)});
+  var R=54,C=2*Math.PI*R,off=0,svg='<circle cx="70" cy="70" r="'+R+'" fill="none" stroke="#F2F4F6" stroke-width="20"/>';
+  if(all>0)BCATS.forEach(function(c){
+    var v=sum[c.k];if(v<=0)return;var len=v/all*C;
+    svg+='<circle cx="70" cy="70" r="'+R+'" fill="none" stroke="'+c.c+'" stroke-width="20" stroke-dasharray="'+Math.max(len-1.5,0.5)+' '+(C-len+1.5)+'" stroke-dashoffset="'+(-off)+'"/>';
+    off+=len;
+  });
+  $('#donutSvg').innerHTML=svg;
+  $('#donutTotal').textContent=won(all);
+  $('#legend').innerHTML=BCATS.filter(function(c){return sum[c.k]>0}).map(function(c){
+    return '<div><b style="font-weight:600"><i style="background:'+c.c+'"></i>'+c.k+'</b><span>'+(all?Math.round(sum[c.k]/all*100):0)+'%</span></div>';
+  }).join('')||'<div class="sub">지출 데이터가 없어요</div>';
+}
+$('#budgetInput').addEventListener('input',function(e){B.total=Math.max(0,+e.target.value||0);saveB();renderBudget()});
+
+function budgetHandler(e){
+  var row=e.target.closest('.expense');if(!row)return;
+  var id=+row.dataset.id,it=B.items.filter(function(x){return x.id===id})[0];if(!it)return;
+  var act=e.target.dataset.act;
+  if(act==='del'&&e.type==='click'){
+    B.items=B.items.filter(function(x){return x.id!==id});saveB();renderBudget();toast('🗑️ 삭제했어요');
+  }else if(act==='paid'&&e.type==='change'){
+    it.paid=e.target.checked;saveB();renderBudget();toast(it.paid?'✅ 결제 확정으로 옮겼어요':'🕒 예상 지출로 되돌렸어요');
+  }else if(act==='amt'&&e.type==='change'){
+    it.amount=Math.max(0,+e.target.value||0);saveB();renderBudget();
+  }
+}
+['#listFixed','#listVar'].forEach(function(s){$(s).addEventListener('click',budgetHandler);$(s).addEventListener('change',budgetHandler)});
+
+$('#addBtn').addEventListener('click',function(){
+  var name=$('#fName').value.trim(),amt=+$('#fAmt').value;
+  if(!name){toast('✏️ 항목명을 입력해 주세요');$('#fName').focus();return}
+  if(!(amt>0)){toast('💸 금액을 입력해 주세요');$('#fAmt').focus();return}
+  B.items.push({id:B.nextId++,name:name,cat:$('#fCat').value,amount:amt,paid:$('#fType').value==='paid'});
+  saveB();renderBudget();
+  $('#fName').value='';$('#fAmt').value='';toast('✅ 지출이 추가됐어요');
+});
+$('#resetBudget').addEventListener('click',function(){
+  if(confirm('가계부를 처음 상태로 되돌릴까요?')){B=defaultBudget();$('#budgetInput').value=B.total;saveB();renderBudget();toast('↺ 초기화했어요')}
+});
+renderBudget();
+
+/* ---------- Page 4 : Checklist ---------- */
+var CALLS=[
+ {id:'c1',t:'행복식당',d:'도착 직전 주문 예약 (금)',tel:'033-531-7011'},
+ {id:'c2',t:'묵호김밥',d:'토요일 오전 재고 확인 · 포장 예약',tel:'0507-1366-7806'},
+ {id:'c3',t:'이야기고래',d:'금요일 저녁 자리 예약',tel:'033-534-7775'},
+ {id:'c4',t:'103LAB 게스트하우스',d:'16시 체크인에 늦을 시 사전 연락 (번호는 네이버 지도에서 확인)',map:true}
+];
+var PREP=[
+ {id:'p1',t:'🥤 개인 텀블러',d:'도야하우스 테이크아웃 필수템!'},
+ {id:'p2',t:'🪑 경량 캠핑 의자',d:'하평해변 사색용'},
+ {id:'p3',t:'👟 편한 운동화',d:'논골담길 오르막 대비'},
+ {id:'p4',t:'🔋 보조배터리 & 보조가방',d:'소품샵 쇼핑용'}
+];
+var CK=store('mk_check')||{};
+function ckRow(it,call){
+  return '<div class="ck'+(CK[it.id]?' done':'')+'"><input class="chk" type="checkbox" data-id="'+it.id+'" id="ck-'+it.id+'" '+(CK[it.id]?'checked':'')+'>'+
+   '<label class="tx" for="ck-'+it.id+'"><div class="tt">'+(call?'📞 ':'')+it.t+'</div><div class="ds">'+it.d+'</div></label>'+
+   (call?(it.tel?'<a class="btn primary" href="tel:'+it.tel.replace(/-/g,'')+'">전화</a>':'<a class="btn naver" target="_blank" rel="noopener" href="https://map.naver.com/p/search/'+encodeURIComponent('동해시 103LAB 게스트하우스')+'">지도</a>'):'')+'</div>';
+}
+function renderCK(){
+  $('#callList').innerHTML=CALLS.map(function(i){return ckRow(i,true)}).join('');
+  $('#prepList').innerHTML=PREP.map(function(i){return ckRow(i,false)}).join('');
+  var all=CALLS.concat(PREP),done=all.filter(function(i){return CK[i.id]}).length;
+  $('#ckBar').style.width=(done/all.length*100)+'%';
+  $('#ckLabel').textContent=done===all.length?'🎉 모든 준비 완료! 출발해요':done+' / '+all.length+' 완료';
+}
+document.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.matches('.ck .chk')){CK[t.dataset.id]=t.checked;store('mk_check',CK);t.closest('.ck').classList.toggle('done',t.checked);
+    var all=CALLS.concat(PREP),done=all.filter(function(i){return CK[i.id]}).length;
+    $('#ckBar').style.width=(done/all.length*100)+'%';
+    $('#ckLabel').textContent=done===all.length?'🎉 모든 준비 완료! 출발해요':done+' / '+all.length+' 완료';
+    if(done===all.length)toast('🎉 준비 끝! 즐거운 여행 되세요');
+  }
+});
+$('#resetCheck').addEventListener('click',function(){CK={};store('mk_check',CK);renderCK();toast('↺ 체크를 모두 해제했어요')});
+renderCK();
+
+/* restore last tab */
+var last=store('mk_tab');if(last&&String(last)!=='1'){showPage(last);window.scrollTo(0,0)}
+})();
+</script>
+</body>
+</html>
